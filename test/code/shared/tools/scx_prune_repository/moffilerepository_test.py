@@ -53,11 +53,9 @@ class MofFileRepositoryTestCase(unittest.TestCase):
         self.GivenRepositoryStructure(['File1.mof',
                                        'directory1/File2.mof',
                                        'directory2/File3.mof'])
-        out = open('./repository/directory1/File4.mof', 'w')
-        out.write('class TestClass {\n')
-        out.write('}')
-        out.close()
-        
+        with open('./repository/directory1/File4.mof', 'w') as out:
+            out.write('class TestClass {\n')
+            out.write('}')
         repository = MofFileRepository('./repository/')
         self.assertEqual(repository.GetFileDefiningClass('TestClass').GetFileName(),
                          './repository/directory1/File4.mof')
@@ -71,10 +69,9 @@ class MofFileRepositoryTestCase(unittest.TestCase):
                 os.makedirs(os.path.dirname(path))
             except OSError:
                 pass
-            out = open(path, 'w')
-            out.write('class Class1 {\n')
-            out.write('}')
-            out.close()
+            with open(path, 'w') as out:
+                out.write('class Class1 {\n')
+                out.write('}')
 
     def GetMofFileNames(self, moffiles):
         filenames = []

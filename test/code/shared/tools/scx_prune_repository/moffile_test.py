@@ -28,53 +28,48 @@ class MofFileTestCase(unittest.TestCase):
         self.assertEqual(moffile.GetDependentClasses(), [])
 
     def testMofFileWithNoDependentClasses(self):
-        out = open('FileWithNoDependentClasses.mof', 'w')
-        out.write('class TestClass {\n')
-        out.write('  string Caption\n')
-        out.write('}')
-        out.close()
+        with open('FileWithNoDependentClasses.mof', 'w') as out:
+            out.write('class TestClass {\n')
+            out.write('  string Caption\n')
+            out.write('}')
         moffile = MofFile('FileWithNoDependentClasses.mof')
         self.assertEqual(moffile.GetDependentClasses(), [])
 
     def testMofFileWithOneDependentClass(self):
-        out = open('FileWithOneDependentClass.mof', 'w')
-        out.write('class TestClass : DependentClass {\n')
-        out.write('  string Caption\n')
-        out.write('}')
-        out.close()
+        with open('FileWithOneDependentClass.mof', 'w') as out:
+            out.write('class TestClass : DependentClass {\n')
+            out.write('  string Caption\n')
+            out.write('}')
         moffile = MofFile('FileWithOneDependentClass.mof')
         self.assertEqual(moffile.GetDependentClasses(), ['DependentClass'])
 
     def testMofFileWithTwoClassesWithOneBaseClass(self):
-        out = open('TwoSubClasses.mof', 'w')
-        out.write('class SubClass1 : BaseClass {\n')
-        out.write('}')
-        out.write('class SubClass2 : BaseClass {\n')
-        out.write('}')
-        out.close()
+        with open('TwoSubClasses.mof', 'w') as out:
+            out.write('class SubClass1 : BaseClass {\n')
+            out.write('}')
+            out.write('class SubClass2 : BaseClass {\n')
+            out.write('}')
         moffile = MofFile('TwoSubClasses.mof')
         self.assertEqual(moffile.GetDependentClasses(), ['BaseClass'])
 
     def testMofFileWithInterDependency(self):
-        out = open('SameFileDependency.mof', 'w')
-        out.write('class BaseClass {\n')
-        out.write('}')
-        out.write('class SubClass2 : BaseClass {\n')
-        out.write('}')
-        out.close()
+        with open('SameFileDependency.mof', 'w') as out:
+            out.write('class BaseClass {\n')
+            out.write('}')
+            out.write('class SubClass2 : BaseClass {\n')
+            out.write('}')
         moffile = MofFile('SameFileDependency.mof')
         self.assertEqual(moffile.GetDependentClasses(), [])
 
     def testDefinedClasses(self):
-        out = open('SameFileDependency.mof', 'w')
-        out.write('class BaseClass {\n')
-        out.write('}')
-        out.write('class SubClass1 : BaseClass {\n')
-        out.write('}')
-        out.write('class SubClass2 : BaseClass {\n')
-        out.write('}')
-        out.write('class SubClass3 : SubClass1 {\n')
-        out.write('}')
-        out.close()
+        with open('SameFileDependency.mof', 'w') as out:
+            out.write('class BaseClass {\n')
+            out.write('}')
+            out.write('class SubClass1 : BaseClass {\n')
+            out.write('}')
+            out.write('class SubClass2 : BaseClass {\n')
+            out.write('}')
+            out.write('class SubClass3 : SubClass1 {\n')
+            out.write('}')
         moffile = MofFile('SameFileDependency.mof')
         self.assertEqual(moffile.GetDefinedClasses(), ['BaseClass', 'SubClass1', 'SubClass2', 'SubClass3'])

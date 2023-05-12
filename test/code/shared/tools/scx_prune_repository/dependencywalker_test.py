@@ -11,10 +11,9 @@ class DependencyWalkerTestCase(unittest.TestCase):
     def setUp(self):
         try:
             os.mkdir('./repository')
-            out = open('./repository/BaseClass.mof', 'w')
-            out.write('class BaseClass {\n')
-            out.write('}')
-            out.close()
+            with open('./repository/BaseClass.mof', 'w') as out:
+                out.write('class BaseClass {\n')
+                out.write('}')
             out = open('./repository/SubClass.mof', 'w')
             out.write('class SubClass : BaseClass {\n')
             out.write('}')
@@ -34,22 +33,18 @@ class DependencyWalkerTestCase(unittest.TestCase):
         self.assertEqual(depLister.GetRequiredFiles(), [])
 
     def testMofFileWithNoDependentClasses(self):
-        out = open('./TestFile.mof', 'w')
-        out.write('class TestClass {\n')
-        out.write('}\n')
-        out.close()
-
+        with open('./TestFile.mof', 'w') as out:
+            out.write('class TestClass {\n')
+            out.write('}\n')
         mofrepository = MofFileRepository('./repository')
         moffile = MofFile('./TestFile.mof')
         depLister = DependencyWalker(mofrepository, [moffile])
         self.assertEqual(depLister.GetRequiredFiles(), [])
 
     def testMofFileWithOneDependentClass(self):
-        out = open('./TestFile.mof', 'w')
-        out.write('class TestClass : BaseClass {\n')
-        out.write('}')
-        out.close()
-
+        with open('./TestFile.mof', 'w') as out:
+            out.write('class TestClass : BaseClass {\n')
+            out.write('}')
         mofrepository = MofFileRepository('./repository')
         moffile = MofFile('./TestFile.mof')
         depLister = DependencyWalker(mofrepository, [moffile])
